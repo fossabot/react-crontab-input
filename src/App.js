@@ -5,7 +5,7 @@ class App extends Component {
   state = { value: "* * * * *", explanation: "", isValid: true, selectedPartIndex: -1 };
   inputRef;
 
-  lastCaretPosition = 0;
+  lastCaretPosition = -1;
 
   onCaretPositionChange() {
     if (!this.inputRef) {
