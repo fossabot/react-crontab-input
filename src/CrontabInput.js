@@ -9,7 +9,6 @@ import Highlighter from "react-highlight-words";
 
 class CrontabInput extends Component {
   state = {
-    value: "* * * * *",
     explanation: "",
     isValid: true,
     selectedPartIndex: -1,
@@ -39,7 +38,7 @@ class CrontabInput extends Component {
     let nextSchedules = [];
     try {
       let cronInstance = new Cron();
-      cronInstance.fromString(this.state.value);
+      cronInstance.fromString(this.props.value);
       let timePointer = +new Date();
       for (let i = 0; i < 5; i++) {
         let schedule = cronInstance.schedule(timePointer);
@@ -57,7 +56,7 @@ class CrontabInput extends Component {
     let explanation;
     let explanationHighlightSegments = [];
     try {
-      let parsed = cronstrue.parse(this.state.value, { locale: this.props.locale });
+      let parsed = cronstrue.parse(this.props.value, { locale: this.props.locale });
       explanation = parsed.description;
       explanationHighlightSegments = [
         parsed.timeSegment,
@@ -87,7 +86,7 @@ class CrontabInput extends Component {
     }
     this.lastCaretPosition = caretPosition;
 
-    let textBeforeCaret = this.state.value.substring(0, caretPosition);
+    let textBeforeCaret = this.props.value.substring(0, caretPosition);
     let selectedPartIndex = textBeforeCaret.split(" ").length - 1;
     this.setState({
       selectedPartIndex,
@@ -97,6 +96,17 @@ class CrontabInput extends Component {
 
   getLocale() {
     return locales[this.props.locale];
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value !== this.props.value) {
+      setTimeout(() => {
+        this.calculateExplanation(() => {
+          this.onCaretPositionChange();
+          this.calculateNext();
+        });
+      });
+    }
   }
 
   render() {
@@ -124,7 +134,7 @@ class CrontabInput extends Component {
         </div>
 
         <input type="text" className={"cron-input " + (!this.state.isValid ? "error" : "")}
-               value={this.state.value}
+               value={this.props.value}
                ref={ref => {
                  this.inputRef = ref;
                }}
@@ -140,21 +150,15 @@ class CrontabInput extends Component {
                onChange={e => {
                  let parts = e.target.value.split(" ").filter(_ => _);
                  if (parts.length !== 5) {
+                   this.props.onChange(e.target.value);
                    this.setState({
-                     value: e.target.value,
                      explanation: "",
                      isValid: false,
-                   }, this.onCaretPositionChange);
+                   });
                    return;
                  }
-                 this.setState({
-                   value: e.target.value,
-                 }, () => {
-                   this.calculateExplanation(() => {
-                     this.onCaretPositionChange();
-                     this.calculateNext();
-                   });
-                 });
+
+                 this.props.onChange(e.target.value);
                }}/>
 
 
@@ -187,6 +191,8 @@ class CrontabInput extends Component {
 
 CrontabInput.propTypes = {
   locale: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 CrontabInput.defaultProps = {
