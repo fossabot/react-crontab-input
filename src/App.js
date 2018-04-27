@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import cronstrue from 'cronstrue';
 
 class App extends Component {
-  state = { value: "* * * * *", explanation: "", isValid: true };
+  state = { value: "* * * * *", explanation: "", isValid: true, selectedPartIndex: -1 };
   inputRef;
 
   lastCaretPosition = 0;
@@ -18,11 +18,11 @@ class App extends Component {
     this.lastCaretPosition = caretPosition;
 
     let textBeforeCaret = this.state.value.substring(0, caretPosition);
-    let segmentI = textBeforeCaret.split(" ").length;
+    let selectedPartIndex = textBeforeCaret.split(" ").length - 1;
     this.setState({
-      segmentI,
+      selectedPartIndex,
     });
-    console.log(segmentI);
+    console.log(selectedPartIndex);
   }
 
   render() {
@@ -43,8 +43,8 @@ class App extends Component {
                  let explanation;
                  let isValid = true;
 
-                 let segments = e.target.value.split(" ").filter(_ => _);
-                 if (segments.length !== 5) {
+                 let parts = e.target.value.split(" ").filter(_ => _);
+                 if (parts.length !== 5) {
                    this.setState({
                      value: e.target.value,
                      explanation: "the expression should have 5 parts",
@@ -71,7 +71,7 @@ class App extends Component {
         </div>
 
         <div>
-          {this.state.segmentI}
+          {this.state.selectedPartIndex}
         </div>
 
       </div>
