@@ -4,9 +4,19 @@ $gray: #AAA;
 .crontab-input {
   .explanation {
     text-align: center;
-    margin: 16px 0 20px;
-    font-size: 1.3em;
+    margin: 16px 0 8px;
+    font-size: 1.5em;
     color: $primary;
+  }
+
+  .next {
+    a {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    font-size: .9em;
+    opacity: .6;
+    margin-bottom: 6px;
   }
 
   .cron-input {

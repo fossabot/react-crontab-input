@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import cronstrue from 'cronstrue';
+import Cron from "cron-converter";
 import valueHints from './valueHints';
 
 class App extends Component {
-  state = { value: "* * * * *", explanation: "", isValid: true, selectedPartIndex: -1 };
+  state = {
+    value: "* * * * *",
+    explanation: "",
+    isValid: true,
+    selectedPartIndex: -1,
+    nextSchedules: [],
+    nextExpanded: false,
+  };
   inputRef;
 
   lastCaretPosition = -1;
 
   componentWillMount() {
+    this.calculateNext();
     this.setState({
       explanation: cronstrue.toString(this.state.value),
     });
@@ -19,6 +28,23 @@ class App extends Component {
     this.setState({
       selectedPartIndex: -1,
     });
+  }
+
+  calculateNext() {
+    let nextSchedules = [];
+    try {
+      let cronInstance = new Cron();
+      cronInstance.fromString(this.state.value);
+      let timePointer = +new Date();
+      for (let i = 0; i < 5; i++) {
+        let schedule = cronInstance.schedule(timePointer);
+        let next = schedule.next();
+        nextSchedules.push(next.format("YYYY-MM-DD hh:mm:ss"));
+        timePointer = +next + 1000;
+      }
+    } catch (e) {
+    }
+    this.setState({ nextSchedules });
   }
 
   onCaretPositionChange() {
@@ -43,6 +69,18 @@ class App extends Component {
       <div className="crontab-input">
         <div className="explanation">
           {this.state.explanation}
+        </div>
+
+        <div className="next">
+          {!!this.state.nextSchedules.length && <span>
+            next: {this.state.nextSchedules[0]} {this.state.nextExpanded ?
+            <a onClick={() => this.setState({ nextExpanded: false })}>(hide)</a> :
+            <a onClick={() => this.setState({ nextExpanded: true })}>(show more)</a>}
+            {!!this.state.nextExpanded && <div className="next-items">
+              {this.state.nextSchedules.slice(1).map(item => <div
+                className="next-item">then: {item}</div>)}
+            </div>}
+          </span>}
         </div>
 
         <input type="text" className="cron-input"
@@ -83,7 +121,10 @@ class App extends Component {
                    value: e.target.value,
                    explanation: explanation,
                    isValid,
-                 }, this.onCaretPositionChange);
+                 }, () => {
+                   this.onCaretPositionChange();
+                   this.calculateNext();
+                 });
                }}/>
 
 
