@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import cronstrue from 'cronstrue';
 import Cron from "cron-converter";
 import valueHints from './valueHints';
+import './crontab-input.css';
 
-class App extends Component {
+class CrontabInput extends Component {
   state = {
     value: "* * * * *",
     explanation: "",
@@ -149,4 +150,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default CrontabInput;
