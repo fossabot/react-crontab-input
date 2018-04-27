@@ -1,0 +1,9 @@
+.idea
+/build
+/public
+/src
+/scripts
+/config
+roadmap.md
+demo.png
+yarn.lock

@@ -59,7 +59,8 @@
     "build-js": "node scripts/build.js",
     "build": "npm-run-all build-css build-js",
     "build-lib": "cross-env NODE_ENV=production webpack --config=config/webpack.config.lib.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "prepublish": "npm run build-lib"
   },
   "jest": {
     "collectCoverageFrom": [
