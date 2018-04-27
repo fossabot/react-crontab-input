@@ -1,22 +1,31 @@
+$primary: rgb(24, 144, 255);
+
 .crontab-input {
   .explanation {
     text-align: center;
-    margin: 10px;
+    margin: 16px 0 20px;
+    font-size: 1.3em;
+    color: $primary;
   }
 
   .cron-input {
     font-family: "Courier New", Courier, monospace;
     font-size: 60px;
     text-align: center;
+    border-radius: 10px;
+    border: 1px solid $primary;
+    outline: none;
   }
 
   .parts {
+    margin-top: 3px;
     .part {
       display: inline-block;
       width: 100px;
       text-align: center;
       &.selected {
         font-weight: bold;
+        color: $primary;
       }
     }
   }
