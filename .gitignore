@@ -1,4 +1,7 @@
 .idea
+
+src/*.css
+
 package-lock.json
 
 # See https://help.github.com/ignore-files/ for more about ignoring files.
