@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import cronstrue from 'cronstrue';
+import valueHints from './valueHints';
 
 class App extends Component {
   state = { value: "* * * * *", explanation: "", isValid: true, selectedPartIndex: -1 };
@@ -82,6 +83,15 @@ class App extends Component {
               className={"part " + (this.state.selectedPartIndex === index ? "selected" : "")}>{unit}</div>
           ))}
         </div>
+
+        {valueHints[this.state.selectedPartIndex] && <div className="allowed-values">
+          {valueHints[this.state.selectedPartIndex].map(value => (
+            <div className="value">
+              <div className="key">{value[0]}</div>
+              <div className="value">{value[1]}</div>
+            </div>
+          ))}
+        </div>}
 
       </div>
     );

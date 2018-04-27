@@ -1,4 +1,5 @@
 $primary: rgb(24, 144, 255);
+$gray: #AAA;
 
 .crontab-input {
   .explanation {
@@ -26,6 +27,29 @@ $primary: rgb(24, 144, 255);
       &.selected {
         font-weight: bold;
         color: $primary;
+      }
+    }
+  }
+
+  .allowed-values {
+    margin-top: 12px;
+    .value {
+      display: flex;
+      width: 400px;
+      margin: auto;
+      .value, .key {
+        border-bottom: 1px dashed $gray;
+        padding: 4px;
+      }
+      .key {
+        flex: 0;
+        flex-basis: 100px;
+        text-align: right;
+        font-weight: bold;
+        padding-right: 20px;
+      }
+      .value {
+        flex: 1;
       }
     }
   }
