@@ -4,6 +4,7 @@ import cronstrue from 'cronstrue/i18n';
 import Cron from "cron-converter";
 import valueHints from './valueHints';
 import './crontab-input.css';
+import locales from "./locales";
 
 class CrontabInput extends Component {
   state = {
@@ -66,6 +67,10 @@ class CrontabInput extends Component {
     });
   }
 
+  getLocale() {
+    return locales[this.props.locale];
+  }
+
   render() {
     return (
       <div className="crontab-input">
@@ -75,12 +80,12 @@ class CrontabInput extends Component {
 
         <div className="next">
           {!!this.state.nextSchedules.length && <span>
-            next: {this.state.nextSchedules[0]} {this.state.nextExpanded ?
-            <a onClick={() => this.setState({ nextExpanded: false })}>(hide)</a> :
-            <a onClick={() => this.setState({ nextExpanded: true })}>(show more)</a>}
+            {this.getLocale().nextTime}: {this.state.nextSchedules[0]} {this.state.nextExpanded ?
+            <a onClick={() => this.setState({ nextExpanded: false })}>({this.getLocale().hide})</a> :
+            <a onClick={() => this.setState({ nextExpanded: true })}>({this.getLocale().showMore})</a>}
             {!!this.state.nextExpanded && <div className="next-items">
               {this.state.nextSchedules.slice(1).map((item, index) => <div
-                className="next-item" key={index}>then: {item}</div>)}
+                className="next-item" key={index}>{this.getLocale().then}: {item}</div>)}
             </div>}
           </span>}
         </div>
@@ -131,7 +136,13 @@ class CrontabInput extends Component {
 
 
         <div className="parts">
-          {["minute", "hour", "day(month)", "month", "day(week)"].map((unit, index) => (
+          {[
+            this.getLocale().minute,
+            this.getLocale().hour,
+            this.getLocale().dayMonth,
+            this.getLocale().month,
+            this.getLocale().dayWeek,
+          ].map((unit, index) => (
             <div key={index}
                  className={"part " + (this.state.selectedPartIndex === index ? "selected" : "")}>{unit}</div>
           ))}
@@ -157,12 +168,6 @@ CrontabInput.propTypes = {
 
 CrontabInput.defaultProps = {
   locale: "en",
-};
-
-
-const locales = {
-  en: {},
-  zh_CN: {},
 };
 
 export default CrontabInput;
