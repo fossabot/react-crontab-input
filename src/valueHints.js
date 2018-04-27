@@ -12,5 +12,5 @@ let valueHints = [
   [...commonValueHint, ["1-12", "allowed values"], ["JAN-DEC", "allowed values"]],
   [...commonValueHint, ["0-6", "allowed values"], ["SUN-SAT", "allowed values"]],
 ];
-
+valueHints[-1] = [...commonValueHint];
 export default valueHints;
