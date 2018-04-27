@@ -148,8 +148,8 @@ class CrontabInput extends Component {
           ))}
         </div>
 
-        {valueHints[this.state.selectedPartIndex] && <div className="allowed-values">
-          {valueHints[this.state.selectedPartIndex].map((value, index) => (
+        {valueHints[this.props.locale][this.state.selectedPartIndex] && <div className="allowed-values">
+          {valueHints[this.props.locale][this.state.selectedPartIndex].map((value, index) => (
             <div className="value" key={index}>
               <div className="key">{value[0]}</div>
               <div className="value">{value[1]}</div>
