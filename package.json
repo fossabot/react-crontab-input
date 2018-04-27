@@ -2,6 +2,7 @@
   "name": "react-crontab-input",
   "version": "0.1.0",
   "private": true,
+  "main": "./lib/main.js",
   "dependencies": {
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.0",
@@ -57,6 +58,7 @@
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "node scripts/build.js",
     "build": "npm-run-all build-css build-js",
+    "build-lib": "cross-env NODE_ENV=production webpack --config=config/webpack.config.lib.js",
     "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {
@@ -100,5 +102,8 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "cross-env": "^5.1.4"
   }
 }
