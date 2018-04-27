@@ -7,6 +7,12 @@ class App extends Component {
 
   lastCaretPosition = -1;
 
+  componentWillMount() {
+    this.setState({
+      explanation: cronstrue.toString(this.state.value),
+    });
+  }
+
   onCaretPositionChange() {
     if (!this.inputRef) {
       return;
@@ -22,12 +28,15 @@ class App extends Component {
     this.setState({
       selectedPartIndex,
     });
-    console.log(selectedPartIndex);
   }
 
   render() {
     return (
-      <div>
+      <div className="crontab-input">
+        <div className="explanation">
+          {this.state.explanation}
+        </div>
+
         <input type="text" className="cron-input"
                value={this.state.value}
                ref={ref => {
@@ -66,12 +75,12 @@ class App extends Component {
                  }, this.onCaretPositionChange);
                }}/>
 
-        <div>
-          {this.state.explanation}
-        </div>
 
-        <div>
-          {this.state.selectedPartIndex}
+        <div className="parts">
+          {["minute", "hour", "day(month)", "month", "day(week)"].map((unit, index) => (
+            <div
+              className={"part " + (this.state.selectedPartIndex === index ? "selected" : "")}>{unit}</div>
+          ))}
         </div>
 
       </div>
