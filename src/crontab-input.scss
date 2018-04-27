@@ -8,6 +8,11 @@ $gray: #AAA;
     margin: 16px 0 8px;
     font-size: 40px;
     color: $primary;
+    .highlighted {
+      background: transparent;
+      color: inherit;
+      text-decoration: underline;
+    }
   }
 
   .next {
