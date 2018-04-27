@@ -2,6 +2,8 @@
 
 a crontab.guru/ replica as a react component, with i18n support
 
+![demo](./demo.png)
+
 ## Installation
 ```
 npm i https://github.com/KevinWang15/react-crontab-input/tree/master
