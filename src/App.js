@@ -36,6 +36,17 @@ class App extends Component {
                onChange={e => {
                  let explanation;
                  let isValid = true;
+
+                 let segments = e.target.value.split(" ").filter(_ => _);
+                 if (segments.length !== 5) {
+                   this.setState({
+                     value: e.target.value,
+                     explanation: "the expression should have 5 parts",
+                     isValid: false,
+                   }, this.onCaretPositionChange);
+                   return;
+                 }
+
                  try {
                    explanation = cronstrue.toString(e.target.value);
                  } catch (e) {
@@ -46,8 +57,7 @@ class App extends Component {
                    value: e.target.value,
                    explanation: explanation,
                    isValid,
-                 });
-                 this.onCaretPositionChange()
+                 }, this.onCaretPositionChange);
                }}/>
 
         <div>
