@@ -68,7 +68,7 @@ class App extends Component {
     return (
       <div className="crontab-input">
         <div className="explanation">
-          {this.state.explanation}
+          {this.state.isValid ? `“${this.state.explanation}”` : "　"}
         </div>
 
         <div className="next">
@@ -83,7 +83,7 @@ class App extends Component {
           </span>}
         </div>
 
-        <input type="text" className="cron-input"
+        <input type="text" className={"cron-input " + (!this.state.isValid ? "error" : "")}
                value={this.state.value}
                ref={ref => {
                  this.inputRef = ref;
@@ -105,7 +105,7 @@ class App extends Component {
                  if (parts.length !== 5) {
                    this.setState({
                      value: e.target.value,
-                     explanation: "the expression should have 5 parts",
+                     explanation: "",
                      isValid: false,
                    }, this.onCaretPositionChange);
                    return;
