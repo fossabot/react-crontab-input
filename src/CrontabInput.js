@@ -80,8 +80,8 @@ class CrontabInput extends Component {
             <a onClick={() => this.setState({ nextExpanded: false })}>(hide)</a> :
             <a onClick={() => this.setState({ nextExpanded: true })}>(show more)</a>}
             {!!this.state.nextExpanded && <div className="next-items">
-              {this.state.nextSchedules.slice(1).map(item => <div
-                className="next-item">then: {item}</div>)}
+              {this.state.nextSchedules.slice(1).map((item, index) => <div
+                className="next-item" key={index}>then: {item}</div>)}
             </div>}
           </span>}
         </div>
@@ -133,14 +133,14 @@ class CrontabInput extends Component {
 
         <div className="parts">
           {["minute", "hour", "day(month)", "month", "day(week)"].map((unit, index) => (
-            <div
-              className={"part " + (this.state.selectedPartIndex === index ? "selected" : "")}>{unit}</div>
+            <div key={index}
+                 className={"part " + (this.state.selectedPartIndex === index ? "selected" : "")}>{unit}</div>
           ))}
         </div>
 
         {valueHints[this.state.selectedPartIndex] && <div className="allowed-values">
-          {valueHints[this.state.selectedPartIndex].map(value => (
-            <div className="value">
+          {valueHints[this.state.selectedPartIndex].map((value, index) => (
+            <div className="value" key={index}>
               <div className="key">{value[0]}</div>
               <div className="value">{value[1]}</div>
             </div>
