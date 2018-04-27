@@ -18,13 +18,10 @@ class CrontabInput extends Component {
 
   lastCaretPosition = -1;
 
-  getLocale() {
-    return (this.props || {}).locale || "en";
-  }
   componentWillMount() {
     this.calculateNext();
     this.setState({
-      explanation: cronstrue.toString(this.state.value, { locale: this.getLocale() }),
+      explanation: cronstrue.toString(this.state.value, { locale: this.props.locale }),
     });
   }
 
@@ -117,7 +114,7 @@ class CrontabInput extends Component {
                  }
 
                  try {
-                   explanation = cronstrue.toString(e.target.value, { locale: this.getLocale() });
+                   explanation = cronstrue.toString(e.target.value, { locale: this.props.locale });
                  } catch (e) {
                    explanation = e.toString();
                    isValid = false;
@@ -156,6 +153,16 @@ class CrontabInput extends Component {
 
 CrontabInput.propTypes = {
   locale: PropTypes.string,
+};
+
+CrontabInput.defaultProps = {
+  locale: "en",
+};
+
+
+const locales = {
+  en: {},
+  zh_CN: {},
 };
 
 export default CrontabInput;

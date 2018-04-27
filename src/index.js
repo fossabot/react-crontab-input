@@ -4,7 +4,7 @@ import CrontabInput from './CrontabInput';
 
 ReactDOM.render(<div>
 
-  <CrontabInput locale={"en"}/>
+  <CrontabInput/>
 
   <hr style={{ margin: 50 }}/>
 
