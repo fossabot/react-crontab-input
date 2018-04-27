@@ -16,7 +16,13 @@ class App extends Component {
       return;
     }
     this.lastCaretPosition = caretPosition;
-    console.log("caret pos", caretPosition);
+
+    let textBeforeCaret = this.state.value.substring(0, caretPosition);
+    let segmentI = textBeforeCaret.split(" ").length;
+    this.setState({
+      segmentI,
+    });
+    console.log(segmentI);
   }
 
   render() {
@@ -62,6 +68,10 @@ class App extends Component {
 
         <div>
           {this.state.explanation}
+        </div>
+
+        <div>
+          {this.state.segmentI}
         </div>
 
       </div>
