@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import cronstrue from 'cronstrue';
 import Cron from "cron-converter";
 import valueHints from './valueHints';
@@ -18,6 +19,7 @@ class CrontabInput extends Component {
   lastCaretPosition = -1;
 
   componentWillMount() {
+    console.log("props", this.props);
     this.calculateNext();
     this.setState({
       explanation: cronstrue.toString(this.state.value),
@@ -149,5 +151,9 @@ class CrontabInput extends Component {
     );
   }
 }
+
+CrontabInput.propTypes = {
+  locale: PropTypes.string,
+};
 
 export default CrontabInput;
