@@ -14,6 +14,13 @@ class App extends Component {
     });
   }
 
+  clearCaretPosition() {
+    this.lastCaretPosition = -1;
+    this.setState({
+      selectedPartIndex: -1,
+    });
+  }
+
   onCaretPositionChange() {
     if (!this.inputRef) {
       return;
@@ -48,6 +55,9 @@ class App extends Component {
                }}
                onKeyUp={e => {
                  this.onCaretPositionChange()
+               }}
+               onBlur={e => {
+                 this.clearCaretPosition()
                }}
                onChange={e => {
                  let explanation;
