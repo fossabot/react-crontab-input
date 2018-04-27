@@ -1,0 +1,2 @@
+- [ ] finer highlight segments
+- [ ] better validation & error message
