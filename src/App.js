@@ -1,18 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import cronstrue from 'cronstrue';
+
+console.log(cronstrue.toString("0 23 ? * MON-FRI"));
 
 class App extends Component {
+  state = { value: "", explanation: "", isValid: true };
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <input type="text" value={this.state.value} onChange={e => {
+          let explanation;
+          let isValid = true;
+          try {
+            explanation = cronstrue.toString(e.target.value);
+          } catch (e) {
+            explanation = e.toString();
+            isValid = false;
+          }
+          this.setState({
+            value: e.target.value,
+            explanation: explanation,
+            isValid,
+          })
+        }}/>
+
+        <div>
+          {this.state.explanation}
+        </div>
+
       </div>
     );
   }
