@@ -5,17 +5,15 @@ import Cron from "cron-converter";
 import valueHints from './valueHints';
 import './crontab-input.css';
 import locales from "./locales";
-import Highlighter from "react-highlight-words";
 
 class CrontabInput extends Component {
   state = {
-    explanation: "",
+    parsed: {},
+    highlightedExplanation: "",
     isValid: true,
     selectedPartIndex: -1,
     nextSchedules: [],
     nextExpanded: false,
-    highlightExplanation: "",
-    explanationHighlightSegments: [],
   };
   inputRef;
 
@@ -30,7 +28,7 @@ class CrontabInput extends Component {
     this.lastCaretPosition = -1;
     this.setState({
       selectedPartIndex: -1,
-      highlightExplanation: "",
+      highlightedExplanation: this.highlightParsed(-1),
     });
   }
 
@@ -51,27 +49,57 @@ class CrontabInput extends Component {
     this.setState({ nextSchedules });
   }
 
+  highlightParsed(selectedPartIndex) {
+    let parsed = this.state.parsed;
+    if (!parsed) {
+      return;
+    }
+    if (selectedPartIndex === -1) {
+      return parsed.description;
+    }
+    let highlighted = "";
+    // let toHighlight = [];
+    // for (let i = 0; i < 5; i++) {
+    //   if (parsed.segments[i] && parsed.segments[i].text) {
+    //     toHighlight.push(parsed.segments[i]);
+    //   }
+    // }
+    //
+    // toHighlight.sort((a, b) => {
+    //   return a.start - b.start;
+    // });
+
+    let toHighlight = [parsed.segments[selectedPartIndex]].filter(_ => _);
+
+    let pointer = 0;
+    toHighlight.forEach(item => {
+      highlighted += parsed.description.substring(pointer, item.start);
+      pointer = item.start;
+      highlighted += `<mark>${parsed.description.substring(pointer, pointer + item.text.length)}</mark>`;
+      pointer += item.text.length;
+    });
+
+    highlighted += parsed.description.substring(pointer);
+
+    return highlighted;
+  }
+
   calculateExplanation(callback) {
     let isValid = true;
-    let explanation;
-    let explanationHighlightSegments = [];
+    let parsed;
+    let highlightedExplanation;
     try {
-      let parsed = cronstrue.parse(this.props.value, { locale: this.props.locale });
-      explanation = parsed.description;
-      explanationHighlightSegments = [
-        parsed.timeSegment,
-        parsed.timeSegment,
-        parsed.dayOfMonthDesc,
-        parsed.monthDesc,
-        parsed.dayOfWeekDesc,
-      ];
+      parsed = cronstrue.parse(this.props.value, { locale: this.props.locale });
+      highlightedExplanation = parsed.description;
+      console.log(parsed);
+
     } catch (e) {
-      explanation = e.toString();
+      highlightedExplanation = e.toString();
       isValid = false;
     }
     this.setState({
-      explanation: explanation,
-      explanationHighlightSegments,
+      parsed,
+      highlightedExplanation,
       isValid,
     }, callback || null);
   }
@@ -81,16 +109,26 @@ class CrontabInput extends Component {
       return;
     }
     let caretPosition = this.inputRef.selectionStart;
+    let selected = this.props.value.substring(this.inputRef.selectionStart, this.inputRef.selectionEnd);
+    if (selected.indexOf(" ") >= 0) {
+      caretPosition = -1;
+    }
     if (this.lastCaretPosition === caretPosition) {
       return;
     }
     this.lastCaretPosition = caretPosition;
-
+    if (caretPosition === -1) {
+      this.setState({
+        highlightedExplanation: this.highlightParsed(-1),
+        selectedPartIndex: -1,
+      });
+      return;
+    }
     let textBeforeCaret = this.props.value.substring(0, caretPosition);
     let selectedPartIndex = textBeforeCaret.split(" ").length - 1;
     this.setState({
+      highlightedExplanation: this.highlightParsed(selectedPartIndex),
       selectedPartIndex,
-      highlightExplanation: this.state.explanationHighlightSegments[selectedPartIndex],
     });
   }
 
@@ -112,14 +150,8 @@ class CrontabInput extends Component {
   render() {
     return (
       <div className="crontab-input">
-        <div className="explanation">
-          <Highlighter
-            highlightClassName="highlighted"
-            searchWords={[this.state.highlightExplanation]}
-            autoEscape={true}
-            textToHighlight={this.state.isValid ? `“${this.state.explanation}”` : "　"}
-          />
-        </div>
+        <div className="explanation"
+             dangerouslySetInnerHTML={{ __html: this.state.isValid ? `“${this.state.highlightedExplanation}”` : "　" }}/>
 
         <div className="next">
           {!!this.state.nextSchedules.length && <span>
@@ -152,7 +184,7 @@ class CrontabInput extends Component {
                  if (parts.length !== 5) {
                    this.props.onChange(e.target.value);
                    this.setState({
-                     explanation: "",
+                     parsed: {},
                      isValid: false,
                    });
                    return;
