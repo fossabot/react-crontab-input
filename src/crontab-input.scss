@@ -8,7 +8,7 @@ $gray: #AAA;
     margin: 16px 0 8px;
     font-size: 40px;
     color: $primary;
-    mark {
+    span {
       background: transparent;
       color: inherit;
       &.active{

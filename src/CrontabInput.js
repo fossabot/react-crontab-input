@@ -80,7 +80,7 @@ class CrontabInput extends Component {
     toHighlight.forEach(item => {
       highlighted += parsed.description.substring(pointer, item.start);
       pointer = item.start;
-      highlighted += `<mark${item.active ? ' class="active"' : ''}>${parsed.description.substring(pointer, pointer + item.text.length)}</mark>`;
+      highlighted += `<span${item.active ? ' class="active"' : ''}>${parsed.description.substring(pointer, pointer + item.text.length)}</span>`;
       pointer += item.text.length;
     });
 
