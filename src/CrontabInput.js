@@ -69,6 +69,16 @@ class CrontabInput extends Component {
       }
     }
 
+
+    // handle special case where minute/hour is presented in the same segment
+    if (toHighlight[0] && toHighlight[1] && toHighlight[0].text && toHighlight[0].text === toHighlight[1].text && toHighlight[0].start === toHighlight[1].start) {
+      if (toHighlight[1].active) {
+        toHighlight[0] = null;
+      } else {
+        toHighlight[1] = null;
+      }
+    }
+
     toHighlight = toHighlight.filter(_ => _);
 
     toHighlight.sort((a, b) => {
@@ -78,6 +88,9 @@ class CrontabInput extends Component {
 
     let pointer = 0;
     toHighlight.forEach(item => {
+      if (pointer > item.start) {
+        return;
+      }
       highlighted += parsed.description.substring(pointer, item.start);
       pointer = item.start;
       highlighted += `<span${item.active ? ' class="active"' : ''}>${parsed.description.substring(pointer, pointer + item.text.length)}</span>`;
