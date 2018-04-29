@@ -2,7 +2,7 @@
 
 a crontab.guru/ replica as a react component, with i18n support
 
-![demo](./demo.png?1)
+![demo](./demo.gif)
 
 ## Online DEMO
 
