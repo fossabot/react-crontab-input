@@ -3,6 +3,7 @@
 a crontab.guru/ replica as a react component, with i18n support
 
 ![demo](./demo.gif)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FKevinWang15%2Freact-crontab-input.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FKevinWang15%2Freact-crontab-input?ref=badge_shield)
 
 ## Online DEMO
 
@@ -40,3 +41,5 @@ In your css code:
 ## License
 
 MIT
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FKevinWang15%2Freact-crontab-input.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FKevinWang15%2Freact-crontab-input?ref=badge_large)
