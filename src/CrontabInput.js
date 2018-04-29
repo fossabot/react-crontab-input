@@ -54,28 +54,33 @@ class CrontabInput extends Component {
     if (!parsed) {
       return;
     }
-    if (selectedPartIndex === -1) {
-      return parsed.description;
-    }
+    let toHighlight = [];
     let highlighted = "";
-    // let toHighlight = [];
-    // for (let i = 0; i < 5; i++) {
-    //   if (parsed.segments[i] && parsed.segments[i].text) {
-    //     toHighlight.push(parsed.segments[i]);
-    //   }
-    // }
-    //
-    // toHighlight.sort((a, b) => {
-    //   return a.start - b.start;
-    // });
 
-    let toHighlight = [parsed.segments[selectedPartIndex]].filter(_ => _);
+    for (let i = 0; i < 5; i++) {
+      if (parsed.segments[i] && parsed.segments[i].text) {
+        toHighlight.push({...parsed.segments[i]});
+      }
+    }
+
+    if (selectedPartIndex >= 0) {
+      if (toHighlight[selectedPartIndex]) {
+        toHighlight[selectedPartIndex].active = true;
+      }
+    }
+
+    toHighlight = toHighlight.filter(_ => _);
+
+    toHighlight.sort((a, b) => {
+      return a.start - b.start;
+    });
+
 
     let pointer = 0;
     toHighlight.forEach(item => {
       highlighted += parsed.description.substring(pointer, item.start);
       pointer = item.start;
-      highlighted += `<mark>${parsed.description.substring(pointer, pointer + item.text.length)}</mark>`;
+      highlighted += `<mark${item.active ? ' class="active"' : ''}>${parsed.description.substring(pointer, pointer + item.text.length)}</mark>`;
       pointer += item.text.length;
     });
 
@@ -90,8 +95,7 @@ class CrontabInput extends Component {
     let highlightedExplanation;
     try {
       parsed = cronstrue.parse(this.props.value, { locale: this.props.locale });
-      highlightedExplanation = parsed.description;
-      console.log(parsed);
+      highlightedExplanation = "";
 
     } catch (e) {
       highlightedExplanation = e.toString();
@@ -101,7 +105,16 @@ class CrontabInput extends Component {
       parsed,
       highlightedExplanation,
       isValid,
-    }, callback || null);
+    }, () => {
+      if (isValid) {
+        this.setState({
+          highlightedExplanation: this.highlightParsed(-1),
+        });
+      }
+      if (callback) {
+        callback();
+      }
+    });
   }
 
   onCaretPositionChange() {

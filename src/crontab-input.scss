@@ -11,7 +11,9 @@ $gray: #AAA;
     mark {
       background: transparent;
       color: inherit;
-      text-decoration: underline;
+      &.active{
+        text-decoration: underline;
+      }
     }
   }
 
