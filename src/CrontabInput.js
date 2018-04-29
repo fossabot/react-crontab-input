@@ -41,7 +41,7 @@ class CrontabInput extends Component {
       for (let i = 0; i < 5; i++) {
         let schedule = cronInstance.schedule(timePointer);
         let next = schedule.next();
-        nextSchedules.push(next.format("YYYY-MM-DD hh:mm:ss"));
+        nextSchedules.push(next.format("YYYY-MM-DD HH:mm:ss"));
         timePointer = +next + 1000;
       }
     } catch (e) {
