@@ -4,7 +4,12 @@ a crontab.guru/ replica as a react component, with i18n support
 
 ![demo](./demo.png)
 
+## Online DEMO
+
+http://kewang-cron-input.surge.sh/
+
 ## Installation
+
 ```
 npm i https://github.com/KevinWang15/react-crontab-input
 ```
