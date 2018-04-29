@@ -60,6 +60,8 @@ class CrontabInput extends Component {
     for (let i = 0; i < 5; i++) {
       if (parsed.segments[i] && parsed.segments[i].text) {
         toHighlight.push({...parsed.segments[i]});
+      } else {
+        toHighlight.push(null);
       }
     }
 
@@ -84,8 +86,7 @@ class CrontabInput extends Component {
     toHighlight.sort((a, b) => {
       return a.start - b.start;
     });
-
-
+    
     let pointer = 0;
     toHighlight.forEach(item => {
       if (pointer > item.start) {
